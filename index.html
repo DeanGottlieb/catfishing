@@ -8,27 +8,26 @@
 </head>
 <body>
     <h1>Welcome to the Catfishing Game!</h1>
-    <div id="user-section">
-        <button id="start-game">Start Game</button>
-        <div id="game-area" class="hidden">
-            <p id="article-number">Article 1 of 10</p>
-            <p id="user-score">Score: 0/0</p>
-            <div id="categories">
-                <h3>Categories</h3>
-                <div id="categories-container"></div>
-            </div>
-            <form id="answer-form">
-                <label for="user-answer">Your Answer:</label>
-                <input type="text" id="user-answer" required>
-                <button type="submit">Submit</button>
-            </form>
-            <div id="result" class="hidden">
-                <p id="correct-answer"></p>
-                <button id="next-article">Next Article</button>
-                <button id="i-got-it">I Got It!</button>
-            </div>
+    <div id="game-area" class="hidden">
+        <p id="article-number">Article 1 of 10</p>
+        <p id="user-score">Score: 0/0</p>
+        <div id="categories">
+            <h3>Categories</h3>
+            <div id="categories-container"></div>
+        </div>
+        <form id="answer-form">
+            <label for="user-answer">Your Answer:</label>
+            <input type="text" id="user-answer" required>
+            <button type="submit">Submit</button>
+        </form>
+        <div id="result" class="hidden">
+            <p id="correct-answer"></p>
+            <button id="next-article">Next Article</button>
+            <button id="i-got-it">I Got It!</button>
+            <button id="close-enough">Close Enough</button>
         </div>
     </div>
+    <button id="start-game">Start Game</button>
     <script src="js/script.js"></script>
 </body>
 </html>

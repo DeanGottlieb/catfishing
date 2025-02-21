@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const correctAnswerElement = document.getElementById('correct-answer');
     const nextArticleButton = document.getElementById('next-article');
     const iGotItButton = document.getElementById('i-got-it');
+    const closeEnoughButton = document.getElementById('close-enough');
 
     let articles = [
         "https://en.wikipedia.org/wiki/JavaScript",
@@ -45,6 +46,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
     iGotItButton.addEventListener('click', function() {
         score++;
+        currentArticleIndex++;
+        userAnswerInput.value = '';
+        resultDiv.classList.add('hidden');
+        displayArticle();
+    });
+
+    closeEnoughButton.addEventListener('click', function() {
+        score += 0.5;
         currentArticleIndex++;
         userAnswerInput.value = '';
         resultDiv.classList.add('hidden');
