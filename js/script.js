@@ -112,7 +112,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 'all articles', 
                 'all wikipedia articles',
                 'articles to be expanded',
-                'maintenance' // Include maintenance keyword
+                'maintenance', // Include maintenance keyword
+                'Ultimate'
             ];
 
             if (page.categories) {
