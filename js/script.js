@@ -98,26 +98,31 @@ document.addEventListener('DOMContentLoaded', function() {
         fetch(apiUrl)
             .then(response => response.json())
             .then(data => {
+                console.log('API Response:', data); // Log the API response
+
                 const page = Object.values(data.query.pages)[0];
                 const unwantedKeywords = [
-                    'Ultimate', 
-                    'Ghouls',
-                    'Pokémon',
+                    'articles with', 
+                    'articles needing' 
                 ];
 
                 if (page.categories) {
-                    page.categories
-                        .filter(category => {
-                            const categoryName = category.title.replace('Category:', '').toLowerCase();
-                            return !unwantedKeywords.some(keyword => categoryName.includes(keyword)) && !category.hidden;
-                        })
-                        .forEach(category => {
-                            const categoryName = category.title.replace('Category:', ''); // Remove 'Category:' prefix
-                            const categoryItem = document.createElement('div');
-                            categoryItem.className = 'category-item';
-                            categoryItem.textContent = categoryName;
-                            categoriesContainer.appendChild(categoryItem);
-                        });
+                    console.log('Categories before filtering:', page.categories); // Log categories before filtering
+
+                    const filteredCategories = page.categories.filter(category => {
+                        const categoryName = category.title.replace('Category:', '').toLowerCase();
+                        return !unwantedKeywords.some(keyword => categoryName.includes(keyword)) && !category.hidden;
+                    });
+
+                    console.log('Categories after filtering:', filteredCategories); // Log categories after filtering
+
+                    filteredCategories.forEach(category => {
+                        const categoryName = category.title.replace('Category:', ''); // Remove 'Category:' prefix
+                        const categoryItem = document.createElement('div');
+                        categoryItem.className = 'category-item';
+                        categoryItem.textContent = categoryName;
+                        categoriesContainer.appendChild(categoryItem);
+                    });
                 }
 
                 if (page.extract) {
