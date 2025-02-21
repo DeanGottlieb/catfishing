@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const articleNumberElement = document.getElementById('article-number');
     const userScoreElement = document.getElementById('user-score');
     const categoriesContainer = document.getElementById('categories-container');
+    const categoriesDiv = document.getElementById('categories');
     const answerForm = document.getElementById('answer-form');
     const userAnswerInput = document.getElementById('user-answer');
     const resultDiv = document.getElementById('result');
@@ -42,6 +43,8 @@ document.addEventListener('DOMContentLoaded', function() {
         userAnswerInput.value = '';
         resultDiv.classList.add('hidden');
         correctAnswerElement.innerHTML = '';
+        categoriesContainer.innerHTML = '';
+        categoriesDiv.classList.add('hidden');
         displayArticle();
     });
 
@@ -51,6 +54,8 @@ document.addEventListener('DOMContentLoaded', function() {
         userAnswerInput.value = '';
         resultDiv.classList.add('hidden');
         correctAnswerElement.innerHTML = '';
+        categoriesContainer.innerHTML = '';
+        categoriesDiv.classList.add('hidden');
         displayArticle();
     });
 
@@ -60,6 +65,8 @@ document.addEventListener('DOMContentLoaded', function() {
         userAnswerInput.value = '';
         resultDiv.classList.add('hidden');
         correctAnswerElement.innerHTML = '';
+        categoriesContainer.innerHTML = '';
+        categoriesDiv.classList.add('hidden');
         displayArticle();
     });
 
@@ -76,6 +83,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const articleUrl = articles[currentArticleIndex];
             articleNumberElement.textContent = `Article ${currentArticleIndex + 1} of ${articles.length}`;
             userScoreElement.textContent = `Score: ${score}/${currentArticleIndex}`;
+            correctAnswerElement.innerHTML = '';
             categoriesContainer.innerHTML = '';
             fetchCategories(articleUrl);
         } else {
@@ -143,6 +151,8 @@ document.addEventListener('DOMContentLoaded', function() {
             iGotItButton.classList.remove('hidden');
             closeEnoughButton.classList.remove('hidden');
         }
+
+        categoriesDiv.classList.remove('hidden');
     }
 
     function endGame() {
