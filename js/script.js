@@ -1,48 +1,56 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const adminSection = document.getElementById('admin-section');
-    const adminLoginForm = document.getElementById('admin-login-form');
-    const adminForm = document.getElementById('admin-form');
-    const articleList = document.getElementById('article-list').querySelector('ul');
     const startGameButton = document.getElementById('start-game');
+    const gameArea = document.getElementById('game-area');
+    const articleNumberElement = document.getElementById('article-number');
+    const userScoreElement = document.getElementById('user-score');
     const categoriesList = document.getElementById('categories').querySelector('ul');
-    const adminPassword = 'lonelydreamer'; // Set your admin password here
-    let articles = [];
-    let categories = [];
+    const answerForm = document.getElementById('answer-form');
+    const userAnswerInput = document.getElementById('user-answer');
 
-    adminLoginForm.addEventListener('submit', function(event) {
-        event.preventDefault();
-        const passwordInput = document.getElementById('admin-password').value;
-        if (passwordInput === adminPassword) {
-            adminSection.classList.remove('hidden');
-            adminLoginForm.classList.add('hidden');
-        } else {
-            alert('Incorrect password. Please try again.');
-        }
-    });
+    let articles = [
+        "https://en.wikipedia.org/wiki/JavaScript",
+        "https://en.wikipedia.org/wiki/Node.js",
+        "https://en.wikipedia.org/wiki/React_(web_framework)",
+        "https://en.wikipedia.org/wiki/Angular_(web_framework)",
+        "https://en.wikipedia.org/wiki/Vue.js",
+        "https://en.wikipedia.org/wiki/Python_(programming_language)",
+        "https://en.wikipedia.org/wiki/Ruby_(programming_language)",
+        "https://en.wikipedia.org/wiki/Java_(programming_language)",
+        "https://en.wikipedia.org/wiki/C_Sharp_(programming_language)",
+        "https://en.wikipedia.org/wiki/Go_(programming_language)"
+    ]; // Predefined list of articles
 
-    adminForm.addEventListener('submit', function(event) {
-        event.preventDefault();
-        const articleUrl = document.getElementById('article-url').value;
-        if (articleUrl && articles.length < 10) {
-            articles.push(articleUrl);
-            const listItem = document.createElement('li');
-            listItem.textContent = articleUrl;
-            articleList.appendChild(listItem);
-            document.getElementById('article-url').value = '';
-        }
-    });
+    let currentArticleIndex = 0;
+    let score = 0;
 
     startGameButton.addEventListener('click', function() {
-        if (articles.length === 10) {
-            categories = [];
-            categoriesList.innerHTML = '';
-            articles.forEach(articleUrl => {
-                fetchCategories(articleUrl);
-            });
-        } else {
-            alert('Please add 10 articles before starting the game.');
-        }
+        startGame();
     });
+
+    answerForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        checkAnswer();
+    });
+
+    function startGame() {
+        currentArticleIndex = 0;
+        score = 0;
+        gameArea.classList.remove('hidden');
+        startGameButton.classList.add('hidden');
+        displayArticle();
+    }
+
+    function displayArticle() {
+        if (currentArticleIndex < articles.length) {
+            const articleUrl = articles[currentArticleIndex];
+            articleNumberElement.textContent = `Article ${currentArticleIndex + 1} of ${articles.length}`;
+            userScoreElement.textContent = `Score: ${score}/${currentArticleIndex}`;
+            categoriesList.innerHTML = '';
+            fetchCategories(articleUrl);
+        } else {
+            endGame();
+        }
+    }
 
     function fetchCategories(articleUrl) {
         const articleTitle = articleUrl.split('/').pop();
@@ -55,15 +63,27 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (page.categories) {
                     page.categories.forEach(category => {
                         const categoryName = category.title;
-                        if (!categories.includes(categoryName)) {
-                            categories.push(categoryName);
-                            const listItem = document.createElement('li');
-                            listItem.textContent = categoryName;
-                            categoriesList.appendChild(listItem);
-                        }
+                        const listItem = document.createElement('li');
+                        listItem.textContent = categoryName;
+                        categoriesList.appendChild(listItem);
                     });
                 }
             })
             .catch(error => console.error('Error fetching categories:', error));
+    }
+
+    function checkAnswer() {
+        const userAnswer = userAnswerInput.value.trim().toLowerCase();
+        const correctAnswer = articles[currentArticleIndex].split('/').pop().replace(/_/g, ' ').toLowerCase();
+        if (userAnswer === correctAnswer) {
+            score++;
+        }
+        currentArticleIndex++;
+        userAnswerInput.value = '';
+        displayArticle();
+    }
+
+    function endGame() {
+        gameArea.innerHTML = `<h2>Game Over</h2><p>Your final score is ${score} out of ${articles.length}</p>`;
     }
 });
