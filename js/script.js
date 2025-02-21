@@ -12,11 +12,24 @@ document.addEventListener('DOMContentLoaded', function() {
     const nextArticleButton = document.getElementById('next-article');
     const iGotItButton = document.getElementById('i-got-it');
     const closeEnoughButton = document.getElementById('close-enough');
+    const versionNumberElement = document.getElementById('version-number');
+    const lastUpdatedElement = document.getElementById('last-updated');
 
     let articles = [];
     let unwantedKeywords = [];
     let currentArticleIndex = 0;
     let score = 0;
+
+    // Fetch version info from JSON file
+    fetch('version.json')
+        .then(response => response.json())
+        .then(data => {
+            if (versionNumberElement && lastUpdatedElement) {
+                versionNumberElement.textContent = data.version;
+                lastUpdatedElement.textContent = data.lastUpdated;
+            }
+        })
+        .catch(error => console.error('Error fetching version info:', error));
 
     // Fetch unwanted keywords from JSON file
     fetch('unwanted_keywords.json')
@@ -42,18 +55,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     nextArticleButton.addEventListener('click', function() {
-        currentArticleIndex++;
-        if (currentArticleIndex < articles.length) {
-            userAnswerInput.value = '';
-            resultDiv.classList.add('hidden');
-            correctAnswerElement.innerHTML = '';
-            articleLink.classList.add('hidden');
-            categoriesContainer.innerHTML = '';
-            categoriesContainer.parentElement.classList.remove('hidden'); // Ensure the categories container is visible
-            displayArticle();
-        } else {
-            endGame();
-        }
+        nextArticle();
     });
 
     iGotItButton.addEventListener('click', function() {
