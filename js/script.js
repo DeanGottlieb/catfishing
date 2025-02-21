@@ -14,17 +14,23 @@ document.addEventListener('DOMContentLoaded', function() {
     const closeEnoughButton = document.getElementById('close-enough');
 
     let articles = [];
+    let unwantedKeywords = [];
     let currentArticleIndex = 0;
     let score = 0;
 
-    // Fetch articles from JSON file
-    fetch('articles.json')
+    // Fetch unwanted keywords from JSON file
+    fetch('unwanted_keywords.json')
+        .then(response => response.json())
+        .then(data => {
+            unwantedKeywords = data.unwanted_keywords;
+            return fetch('articles.json');
+        })
         .then(response => response.json())
         .then(data => {
             articles = data.articles;
             startGameButton.disabled = false; // Enable the start button after loading articles
         })
-        .catch(error => console.error('Error fetching articles:', error));
+        .catch(error => console.error('Error fetching data:', error));
 
     startGameButton.addEventListener('click', function() {
         startGame();
@@ -104,18 +110,6 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('API Response:', data); // Log the API response
 
             const page = Object.values(data.query.pages)[0];
-            const unwantedKeywords = [
-                'articles with', 
-                'articles needing', 
-                'articles containing', 
-                'cs1', 
-                'all articles', 
-                'all wikipedia articles',
-                'articles to be expanded',
-                'maintenance', // Include maintenance keyword
-                'tracking',
-                'wikidata'
-            ];
 
             if (page.categories) {
                 console.log('Categories before filtering:', page.categories); // Log categories before filtering
