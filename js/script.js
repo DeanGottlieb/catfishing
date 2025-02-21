@@ -91,50 +91,65 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    function fetchCategories(articleUrl) {
-        const articleTitle = articleUrl.split('/').pop();
-        const apiUrl = `https://en.wikipedia.org/w/api.php?action=query&titles=${articleTitle}&prop=categories|extracts&exintro&format=json&origin=*`;
+    async function fetchCategories(articleUrl, clcontinue = null) {
+        const articleTitle = encodeURIComponent(articleUrl.split('/').pop());
+        let apiUrl = `https://en.wikipedia.org/w/api.php?action=query&titles=${articleTitle}&prop=categories|extracts&exintro&format=json&origin=*`;
+        if (clcontinue) {
+            apiUrl += `&clcontinue=${clcontinue}`;
+        }
 
-        fetch(apiUrl)
-            .then(response => response.json())
-            .then(data => {
-                console.log('API Response:', data); // Log the API response
+        try {
+            const response = await fetch(apiUrl);
+            const data = await response.json();
+            console.log('API Response:', data); // Log the API response
 
-                const page = Object.values(data.query.pages)[0];
-                const unwantedKeywords = [
-                    'articles with', 
-                    'articles needing' 
-                ];
+            const page = Object.values(data.query.pages)[0];
+            const unwantedKeywords = [
+                'articles with', 
+                'articles needing', 
+                'articles containing', 
+                'cs1', 
+                'all articles', 
+                'all wikipedia articles',
+                'articles to be expanded',
+                'maintenance' // Include maintenance keyword
+            ];
 
-                if (page.categories) {
-                    console.log('Categories before filtering:', page.categories); // Log categories before filtering
+            if (page.categories) {
+                console.log('Categories before filtering:', page.categories); // Log categories before filtering
 
-                    const filteredCategories = page.categories.filter(category => {
-                        const categoryName = category.title.replace('Category:', '').toLowerCase();
-                        return !unwantedKeywords.some(keyword => categoryName.includes(keyword)) && !category.hidden;
-                    });
+                const filteredCategories = page.categories.filter(category => {
+                    const categoryName = category.title.replace('Category:', '').toLowerCase();
+                    return !unwantedKeywords.some(keyword => categoryName.includes(keyword)) && !category.hidden;
+                });
 
-                    console.log('Categories after filtering:', filteredCategories); // Log categories after filtering
+                console.log('Categories after filtering:', filteredCategories); // Log categories after filtering
 
-                    filteredCategories.forEach(category => {
-                        const categoryName = category.title.replace('Category:', ''); // Remove 'Category:' prefix
-                        const categoryItem = document.createElement('div');
-                        categoryItem.className = 'category-item';
-                        categoryItem.textContent = categoryName;
-                        categoriesContainer.appendChild(categoryItem);
-                    });
-                }
+                filteredCategories.forEach(category => {
+                    const categoryName = category.title.replace('Category:', ''); // Remove 'Category:' prefix
+                    const categoryItem = document.createElement('div');
+                    categoryItem.className = 'category-item';
+                    categoryItem.textContent = categoryName;
+                    categoriesContainer.appendChild(categoryItem);
+                });
+            }
 
-                if (page.extract) {
-                    const extract = page.extract;
-                    correctAnswerElement.dataset.extract = extract;
-                    correctAnswerElement.dataset.title = page.title;
-                    correctAnswerElement.dataset.url = articleUrl;
-                }
+            if (page.extract) {
+                const extract = page.extract;
+                correctAnswerElement.dataset.extract = extract;
+                correctAnswerElement.dataset.title = page.title;
+                correctAnswerElement.dataset.url = articleUrl;
+            }
 
-                categoriesContainer.parentElement.classList.remove('hidden'); // Ensure this is called
-            })
-            .catch(error => console.error('Error fetching categories:', error));
+            categoriesContainer.parentElement.classList.remove('hidden'); // Ensure this is called
+
+            // Check if there are more categories to fetch
+            if (data.continue && data.continue.clcontinue) {
+                await fetchCategories(articleUrl, data.continue.clcontinue);
+            }
+        } catch (error) {
+            console.error('Error fetching categories:', error);
+        }
     }
 
     function checkAnswer() {
