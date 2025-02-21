@@ -99,14 +99,24 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => response.json())
             .then(data => {
                 const page = Object.values(data.query.pages)[0];
-                const titleWords = page.title.toLowerCase().split(/\W+/);
+                const unwantedKeywords = [
+                    'articles with', 
+                    'articles needing', 
+                    'articles containing', 
+                    'cs1', 
+                    'all articles', 
+                    'all wikipedia articles',
+                    'articles to be expanded',
+                    'Ultimate',
+                    'Ghouls',
+                    'Pokémon',
+                ];
 
                 if (page.categories) {
                     page.categories
                         .filter(category => {
                             const categoryName = category.title.replace('Category:', '').toLowerCase();
-                            return !categoryName.includes('articles with') &&
-                                   !titleWords.some(word => categoryName.includes(word));
+                            return !unwantedKeywords.some(keyword => categoryName.includes(keyword));
                         })
                         .forEach(category => {
                             const categoryName = category.title.replace('Category:', ''); // Remove 'Category:' prefix
