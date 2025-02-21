@@ -112,8 +112,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 'all articles', 
                 'all wikipedia articles',
                 'articles to be expanded',
-                'maintenance', // Include maintenance keyword
-                'Ultimate'
+                'maintenance' // Include maintenance keyword
             ];
 
             if (page.categories) {
@@ -121,7 +120,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 const filteredCategories = page.categories.filter(category => {
                     const categoryName = category.title.replace('Category:', '').toLowerCase();
-                    return !unwantedKeywords.some(keyword => categoryName.includes(keyword)) && !category.hidden;
+                    return (
+                        !unwantedKeywords.some(keyword => categoryName.includes(keyword)) && 
+                        !category.hidden && 
+                        !categoryName.includes('tracking') // Filter out tracking categories
+                    );
                 });
 
                 console.log('Categories after filtering:', filteredCategories); // Log categories after filtering
@@ -147,6 +150,12 @@ document.addEventListener('DOMContentLoaded', function() {
             // Check if there are more categories to fetch
             if (data.continue && data.continue.clcontinue) {
                 await fetchCategories(articleUrl, data.continue.clcontinue);
+            } else {
+                // If no more categories to fetch, display the article
+                if (!clcontinue) {
+                    correctAnswerElement.innerHTML = '';
+                    categoriesContainer.innerHTML = '';
+                }
             }
         } catch (error) {
             console.error('Error fetching categories:', error);
