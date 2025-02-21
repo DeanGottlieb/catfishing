@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const gameArea = document.getElementById('game-area');
     const articleNumberElement = document.getElementById('article-number');
     const userScoreElement = document.getElementById('user-score');
-    const categoriesList = document.getElementById('categories').querySelector('ul');
+    const categoriesContainer = document.getElementById('categories-container');
     const answerForm = document.getElementById('answer-form');
     const userAnswerInput = document.getElementById('user-answer');
     const resultDiv = document.getElementById('result');
@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const articleUrl = articles[currentArticleIndex];
             articleNumberElement.textContent = `Article ${currentArticleIndex + 1} of ${articles.length}`;
             userScoreElement.textContent = `Score: ${score}/${currentArticleIndex}`;
-            categoriesList.innerHTML = '';
+            categoriesContainer.innerHTML = '';
             fetchCategories(articleUrl);
         } else {
             endGame();
@@ -81,10 +81,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 const page = Object.values(data.query.pages)[0];
                 if (page.categories) {
                     page.categories.forEach(category => {
-                        const categoryName = category.title;
-                        const listItem = document.createElement('li');
-                        listItem.textContent = categoryName;
-                        categoriesList.appendChild(listItem);
+                        const categoryName = category.title.replace('Category:', ''); // Remove 'Category:' prefix
+                        const categoryItem = document.createElement('div');
+                        categoryItem.className = 'category-item';
+                        categoryItem.textContent = categoryName;
+                        categoriesContainer.appendChild(categoryItem);
                     });
                 }
             })
