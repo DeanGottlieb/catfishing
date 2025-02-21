@@ -8,7 +8,15 @@
 </head>
 <body>
     <h1>Welcome to the Catfishing Game!</h1>
-    <div id="admin-section">
+    <div id="admin-login-form">
+        <h2>Admin Login</h2>
+        <form>
+            <label for="admin-password">Password:</label>
+            <input type="password" id="admin-password" required>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+    <div id="admin-section" class="hidden">
         <h2>Admin Section</h2>
         <form id="admin-form">
             <label for="article-url">Wikipedia Article URL:</label>

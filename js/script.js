@@ -1,10 +1,24 @@
 document.addEventListener('DOMContentLoaded', function() {
+    const adminSection = document.getElementById('admin-section');
+    const adminLoginForm = document.getElementById('admin-login-form');
     const adminForm = document.getElementById('admin-form');
     const articleList = document.getElementById('article-list').querySelector('ul');
     const startGameButton = document.getElementById('start-game');
     const categoriesList = document.getElementById('categories').querySelector('ul');
+    const adminPassword = 'lonelydreamer'; // Set your admin password here
     let articles = [];
     let categories = [];
+
+    adminLoginForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const passwordInput = document.getElementById('admin-password').value;
+        if (passwordInput === adminPassword) {
+            adminSection.classList.remove('hidden');
+            adminLoginForm.classList.add('hidden');
+        } else {
+            alert('Incorrect password. Please try again.');
+        }
+    });
 
     adminForm.addEventListener('submit', function(event) {
         event.preventDefault();
