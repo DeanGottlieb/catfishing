@@ -8,8 +8,25 @@
 </head>
 <body>
     <h1>Welcome to the Catfishing Game!</h1>
-    <div id="game">
-        <!-- Game content goes here -->
+    <div id="admin-section">
+        <h2>Admin Section</h2>
+        <form id="admin-form">
+            <label for="article-url">Wikipedia Article URL:</label>
+            <input type="text" id="article-url" required>
+            <button type="submit">Add Article</button>
+        </form>
+        <div id="article-list">
+            <h3>Articles</h3>
+            <ul></ul>
+        </div>
+    </div>
+    <div id="user-section">
+        <h2>User Section</h2>
+        <button id="start-game">Start Game</button>
+        <div id="categories">
+            <h3>Categories</h3>
+            <ul></ul>
+        </div>
     </div>
     <script src="js/script.js"></script>
 </body>
