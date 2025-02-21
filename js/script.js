@@ -43,37 +43,27 @@ document.addEventListener('DOMContentLoaded', function() {
 
     nextArticleButton.addEventListener('click', function() {
         currentArticleIndex++;
-        userAnswerInput.value = '';
-        resultDiv.classList.add('hidden');
-        correctAnswerElement.innerHTML = '';
-        articleLink.classList.add('hidden');
-        categoriesContainer.innerHTML = '';
-        categoriesContainer.parentElement.classList.remove('hidden'); // Ensure the categories container is visible
-        displayArticle();
+        if (currentArticleIndex < articles.length) {
+            userAnswerInput.value = '';
+            resultDiv.classList.add('hidden');
+            correctAnswerElement.innerHTML = '';
+            articleLink.classList.add('hidden');
+            categoriesContainer.innerHTML = '';
+            categoriesContainer.parentElement.classList.remove('hidden'); // Ensure the categories container is visible
+            displayArticle();
+        } else {
+            endGame();
+        }
     });
 
     iGotItButton.addEventListener('click', function() {
         score++;
-        currentArticleIndex++;
-        userAnswerInput.value = '';
-        resultDiv.classList.add('hidden');
-        correctAnswerElement.innerHTML = '';
-        articleLink.classList.add('hidden');
-        categoriesContainer.innerHTML = '';
-        categoriesContainer.parentElement.classList.remove('hidden'); // Ensure the categories container is visible
-        displayArticle();
+        nextArticle();
     });
 
     closeEnoughButton.addEventListener('click', function() {
         score += 0.5;
-        currentArticleIndex++;
-        userAnswerInput.value = '';
-        resultDiv.classList.add('hidden');
-        correctAnswerElement.innerHTML = '';
-        articleLink.classList.add('hidden');
-        categoriesContainer.innerHTML = '';
-        categoriesContainer.parentElement.classList.remove('hidden'); // Ensure the categories container is visible
-        displayArticle();
+        nextArticle();
     });
 
     function startGame() {
@@ -82,6 +72,21 @@ document.addEventListener('DOMContentLoaded', function() {
         gameArea.classList.remove('hidden');
         startGameButton.classList.add('hidden');
         displayArticle();
+    }
+
+    function nextArticle() {
+        currentArticleIndex++;
+        if (currentArticleIndex < articles.length) {
+            userAnswerInput.value = '';
+            resultDiv.classList.add('hidden');
+            correctAnswerElement.innerHTML = '';
+            articleLink.classList.add('hidden');
+            categoriesContainer.innerHTML = '';
+            categoriesContainer.parentElement.classList.remove('hidden'); // Ensure the categories container is visible
+            displayArticle();
+        } else {
+            endGame();
+        }
     }
 
     function displayArticle() {
