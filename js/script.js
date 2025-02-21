@@ -13,21 +13,18 @@ document.addEventListener('DOMContentLoaded', function() {
     const iGotItButton = document.getElementById('i-got-it');
     const closeEnoughButton = document.getElementById('close-enough');
 
-    let articles = [
-        "https://en.wikipedia.org/wiki/JavaScript",
-        "https://en.wikipedia.org/wiki/Node.js",
-        "https://en.wikipedia.org/wiki/React_(web_framework)",
-        "https://en.wikipedia.org/wiki/Angular_(web_framework)",
-        "https://en.wikipedia.org/wiki/Vue.js",
-        "https://en.wikipedia.org/wiki/Python_(programming_language)",
-        "https://en.wikipedia.org/wiki/Ruby_(programming_language)",
-        "https://en.wikipedia.org/wiki/Java_(programming_language)",
-        "https://en.wikipedia.org/wiki/C_Sharp_(programming_language)",
-        "https://en.wikipedia.org/wiki/Go_(programming_language)"
-    ]; // Predefined list of articles
-
+    let articles = [];
     let currentArticleIndex = 0;
     let score = 0;
+
+    // Fetch articles from JSON file
+    fetch('articles.json')
+        .then(response => response.json())
+        .then(data => {
+            articles = data.articles;
+            startGameButton.disabled = false; // Enable the start button after loading articles
+        })
+        .catch(error => console.error('Error fetching articles:', error));
 
     startGameButton.addEventListener('click', function() {
         startGame();
