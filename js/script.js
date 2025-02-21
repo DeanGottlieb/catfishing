@@ -100,14 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(data => {
                 const page = Object.values(data.query.pages)[0];
                 const unwantedKeywords = [
-                    'articles with', 
-                    'articles needing', 
-                    'articles containing', 
-                    'cs1', 
-                    'all articles', 
-                    'all wikipedia articles',
-                    'articles to be expanded',
-                    'Ultimate',
+                    'Ultimate', 
                     'Ghouls',
                     'Pokémon',
                 ];
@@ -116,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     page.categories
                         .filter(category => {
                             const categoryName = category.title.replace('Category:', '').toLowerCase();
-                            return !unwantedKeywords.some(keyword => categoryName.includes(keyword));
+                            return !unwantedKeywords.some(keyword => categoryName.includes(keyword)) && !category.hidden;
                         })
                         .forEach(category => {
                             const categoryName = category.title.replace('Category:', ''); // Remove 'Category:' prefix
