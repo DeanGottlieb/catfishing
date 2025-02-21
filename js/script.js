@@ -41,6 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
         currentArticleIndex++;
         userAnswerInput.value = '';
         resultDiv.classList.add('hidden');
+        correctAnswerElement.innerHTML = '';
         displayArticle();
     });
 
@@ -49,6 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
         currentArticleIndex++;
         userAnswerInput.value = '';
         resultDiv.classList.add('hidden');
+        correctAnswerElement.innerHTML = '';
         displayArticle();
     });
 
@@ -57,6 +59,7 @@ document.addEventListener('DOMContentLoaded', function() {
         currentArticleIndex++;
         userAnswerInput.value = '';
         resultDiv.classList.add('hidden');
+        correctAnswerElement.innerHTML = '';
         displayArticle();
     });
 
@@ -82,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function fetchCategories(articleUrl) {
         const articleTitle = articleUrl.split('/').pop();
-        const apiUrl = `https://en.wikipedia.org/w/api.php?action=query&titles=${articleTitle}&prop=categories&format=json&origin=*`;
+        const apiUrl = `https://en.wikipedia.org/w/api.php?action=query&titles=${articleTitle}&prop=categories|extracts&exintro&format=json&origin=*`;
 
         fetch(apiUrl)
             .then(response => response.json())
@@ -97,6 +100,13 @@ document.addEventListener('DOMContentLoaded', function() {
                         categoriesContainer.appendChild(categoryItem);
                     });
                 }
+
+                if (page.extract) {
+                    const extract = page.extract;
+                    correctAnswerElement.dataset.extract = extract;
+                    correctAnswerElement.dataset.title = page.title;
+                    correctAnswerElement.dataset.url = articleUrl;
+                }
             })
             .catch(error => console.error('Error fetching categories:', error));
     }
@@ -109,13 +119,30 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (distance <= threshold) {
             score++;
-            correctAnswerElement.textContent = `Correct! The answer is: ${correctAnswer}`;
+            showCorrectAnswer(true);
         } else {
-            correctAnswerElement.textContent = `Incorrect. The correct answer is: ${correctAnswer}`;
+            showCorrectAnswer(false);
         }
 
         userScoreElement.textContent = `Score: ${score}/${currentArticleIndex + 1}`;
         resultDiv.classList.remove('hidden');
+    }
+
+    function showCorrectAnswer(isCorrect) {
+        const title = correctAnswerElement.dataset.title;
+        const url = correctAnswerElement.dataset.url;
+        const extract = correctAnswerElement.dataset.extract;
+        correctAnswerElement.innerHTML = `<h2><a href="${url}" target="_blank">${title}</a></h2><p>${extract}</p>`;
+        correctAnswerElement.style.fontSize = '1.2em';
+        correctAnswerElement.style.marginTop = '20px';
+
+        if (isCorrect) {
+            iGotItButton.classList.add('hidden');
+            closeEnoughButton.classList.add('hidden');
+        } else {
+            iGotItButton.classList.remove('hidden');
+            closeEnoughButton.classList.remove('hidden');
+        }
     }
 
     function endGame() {
