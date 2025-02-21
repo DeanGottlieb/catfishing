@@ -1,6 +1,6 @@
 /* Body styles */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Alegreya', serif; /* Change font here */
     background-color: #002B36; /* Background color updated to #002B36 */
     text-align: center;
     margin: 0;

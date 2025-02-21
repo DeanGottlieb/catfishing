@@ -99,14 +99,22 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => response.json())
             .then(data => {
                 const page = Object.values(data.query.pages)[0];
+                const titleWords = page.title.toLowerCase().split(/\W+/);
+
                 if (page.categories) {
-                    page.categories.forEach(category => {
-                        const categoryName = category.title.replace('Category:', ''); // Remove 'Category:' prefix
-                        const categoryItem = document.createElement('div');
-                        categoryItem.className = 'category-item';
-                        categoryItem.textContent = categoryName;
-                        categoriesContainer.appendChild(categoryItem);
-                    });
+                    page.categories
+                        .filter(category => {
+                            const categoryName = category.title.replace('Category:', '').toLowerCase();
+                            return !categoryName.includes('articles with') &&
+                                   !titleWords.some(word => categoryName.includes(word));
+                        })
+                        .forEach(category => {
+                            const categoryName = category.title.replace('Category:', ''); // Remove 'Category:' prefix
+                            const categoryItem = document.createElement('div');
+                            categoryItem.className = 'category-item';
+                            categoryItem.textContent = categoryName;
+                            categoriesContainer.appendChild(categoryItem);
+                        });
                 }
 
                 if (page.extract) {
