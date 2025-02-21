@@ -45,6 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
         correctAnswerElement.innerHTML = '';
         articleLink.classList.add('hidden');
         categoriesContainer.innerHTML = '';
+        categoriesContainer.parentElement.classList.remove('hidden'); // Ensure the categories container is visible
         displayArticle();
     });
 
@@ -56,6 +57,7 @@ document.addEventListener('DOMContentLoaded', function() {
         correctAnswerElement.innerHTML = '';
         articleLink.classList.add('hidden');
         categoriesContainer.innerHTML = '';
+        categoriesContainer.parentElement.classList.remove('hidden'); // Ensure the categories container is visible
         displayArticle();
     });
 
@@ -67,6 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
         correctAnswerElement.innerHTML = '';
         articleLink.classList.add('hidden');
         categoriesContainer.innerHTML = '';
+        categoriesContainer.parentElement.classList.remove('hidden'); // Ensure the categories container is visible
         displayArticle();
     });
 
@@ -116,7 +119,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     correctAnswerElement.dataset.url = articleUrl;
                 }
 
-                categoriesContainer.parentElement.classList.remove('hidden');
+                categoriesContainer.parentElement.classList.remove('hidden'); // Ensure this is called
             })
             .catch(error => console.error('Error fetching categories:', error));
     }
