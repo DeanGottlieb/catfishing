@@ -105,8 +105,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     async function fetchCategories(articleUrl, clcontinue = null) {
-        const articleTitle = encodeURIComponent(articleUrl.split('/').pop());
-        let apiUrl = `https://en.wikipedia.org/w/api.php?action=query&titles=${articleTitle}&prop=categories|extracts&exintro&format=json&origin=*`;
+        const articleTitle = decodeURIComponent(articleUrl.split('/').pop());
+        let apiUrl = `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(articleTitle)}&prop=categories|extracts&exintro&format=json&origin=*`;
         if (clcontinue) {
             apiUrl += `&clcontinue=${clcontinue}`;
         }
@@ -160,7 +160,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function checkAnswer() {
         const userAnswer = userAnswerInput.value.trim().toLowerCase();
-        const correctAnswer = articles[currentArticleIndex].split('/').pop().replace(/_/g, ' ').toLowerCase();
+        const correctAnswer = decodeURIComponent(articles[currentArticleIndex].split('/').pop()).replace(/_/g, ' ').toLowerCase();
         const distance = levenshteinDistance(userAnswer, correctAnswer);
         const threshold = 3; // Adjust this threshold as needed
 
