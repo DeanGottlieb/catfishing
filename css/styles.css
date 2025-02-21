@@ -78,3 +78,13 @@ input[type="text"] {
     border: 1px solid #ccc;
     font-weight: bold;
 }
+
+#correct-answer h2 {
+    font-size: 1.5em;
+    margin: 20px 0 10px 0;
+}
+
+#article-link {
+    display: block;
+    margin-bottom: 20px;
+}

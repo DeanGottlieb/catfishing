@@ -4,11 +4,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const articleNumberElement = document.getElementById('article-number');
     const userScoreElement = document.getElementById('user-score');
     const categoriesContainer = document.getElementById('categories-container');
-    const categoriesDiv = document.getElementById('categories');
     const answerForm = document.getElementById('answer-form');
     const userAnswerInput = document.getElementById('user-answer');
     const resultDiv = document.getElementById('result');
     const correctAnswerElement = document.getElementById('correct-answer');
+    const articleLink = document.getElementById('article-link');
     const nextArticleButton = document.getElementById('next-article');
     const iGotItButton = document.getElementById('i-got-it');
     const closeEnoughButton = document.getElementById('close-enough');
@@ -43,8 +43,8 @@ document.addEventListener('DOMContentLoaded', function() {
         userAnswerInput.value = '';
         resultDiv.classList.add('hidden');
         correctAnswerElement.innerHTML = '';
+        articleLink.classList.add('hidden');
         categoriesContainer.innerHTML = '';
-        categoriesDiv.classList.add('hidden');
         displayArticle();
     });
 
@@ -54,8 +54,8 @@ document.addEventListener('DOMContentLoaded', function() {
         userAnswerInput.value = '';
         resultDiv.classList.add('hidden');
         correctAnswerElement.innerHTML = '';
+        articleLink.classList.add('hidden');
         categoriesContainer.innerHTML = '';
-        categoriesDiv.classList.add('hidden');
         displayArticle();
     });
 
@@ -65,8 +65,8 @@ document.addEventListener('DOMContentLoaded', function() {
         userAnswerInput.value = '';
         resultDiv.classList.add('hidden');
         correctAnswerElement.innerHTML = '';
+        articleLink.classList.add('hidden');
         categoriesContainer.innerHTML = '';
-        categoriesDiv.classList.add('hidden');
         displayArticle();
     });
 
@@ -115,6 +115,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     correctAnswerElement.dataset.title = page.title;
                     correctAnswerElement.dataset.url = articleUrl;
                 }
+
+                categoriesContainer.parentElement.classList.remove('hidden');
             })
             .catch(error => console.error('Error fetching categories:', error));
     }
@@ -140,9 +142,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const title = correctAnswerElement.dataset.title;
         const url = correctAnswerElement.dataset.url;
         const extract = correctAnswerElement.dataset.extract;
-        correctAnswerElement.innerHTML = `<h2><a href="${url}" target="_blank">${title}</a></h2><p>${extract}</p>`;
-        correctAnswerElement.style.fontSize = '1.2em';
-        correctAnswerElement.style.marginTop = '20px';
+        correctAnswerElement.innerHTML = `<h2 style="color: ${isCorrect ? 'green' : 'red'};">${title}</h2><p>${extract}</p>`;
+        articleLink.href = url;
+        articleLink.classList.remove('hidden');
 
         if (isCorrect) {
             iGotItButton.classList.add('hidden');
@@ -151,8 +153,6 @@ document.addEventListener('DOMContentLoaded', function() {
             iGotItButton.classList.remove('hidden');
             closeEnoughButton.classList.remove('hidden');
         }
-
-        categoriesDiv.classList.remove('hidden');
     }
 
     function endGame() {
