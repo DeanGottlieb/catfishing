@@ -186,7 +186,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const userAnswer = userAnswerInput.value.trim().toLowerCase();
         const correctAnswer = decodeURIComponent(articles[currentArticleIndex].split('/').pop()).replace(/_/g, ' ').toLowerCase();
         const distance = levenshteinDistance(userAnswer, correctAnswer);
-        const threshold = 3; // Adjust this threshold as needed
+        const threshold = 4; // Adjust this threshold as needed
 
         if (distance <= threshold) {
             score++;
