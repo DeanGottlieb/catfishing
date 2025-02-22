@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let unwantedKeywords = [];
     let currentArticleIndex = 0;
     let score = 0;
+    let results = [];
 
     // Fetch version info from JSON file
     fetch('version.json')
@@ -75,17 +76,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
     iGotItButton.addEventListener('click', function() {
         score++;
+        results[currentArticleIndex] = 'right';
         nextArticle();
     });
 
     closeEnoughButton.addEventListener('click', function() {
         score += 0.5;
+        results[currentArticleIndex] = 'close';
         nextArticle();
     });
 
     function startGame() {
         currentArticleIndex = 0;
         score = 0;
+        results = [];
         gameArea.classList.remove('hidden');
         startGameButton.classList.add('hidden');
         displayArticle();
@@ -181,8 +185,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (distance <= threshold) {
             score++;
+            results[currentArticleIndex] = 'right';
             showCorrectAnswer(true);
         } else {
+            results[currentArticleIndex] = 'wrong';
             showCorrectAnswer(false);
         }
 
@@ -209,6 +215,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function endGame() {
         gameArea.innerHTML = `<h2>Game Over</h2><p>Your final score is ${score} out of ${articles.length}</p>`;
+        const resultsDiv = document.createElement('div');
+        resultsDiv.innerHTML = '<h3>Results:</h3>';
+        results.forEach((result, index) => {
+            const resultEmoji = result === 'right' ? '🔥' : result === 'wrong' ? '🐟' : '🥚';
+            resultsDiv.innerHTML += `<p>Article ${index + 1}: ${resultEmoji}</p>`;
+        });
+        gameArea.appendChild(resultsDiv);
     }
 
     function levenshteinDistance(a, b) {
