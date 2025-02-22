@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const closeEnoughButton = document.getElementById('close-enough');
     const versionNumberElement = document.getElementById('version-number');
     const lastUpdatedElement = document.getElementById('last-updated');
+    const copyScoreButton = document.getElementById('copy-score');
 
     let articles = [];
     let unwantedKeywords = [];
@@ -84,6 +85,10 @@ document.addEventListener('DOMContentLoaded', function() {
         score += 0.5;
         results[currentArticleIndex] = 'close';
         nextArticle();
+    });
+
+    copyScoreButton.addEventListener('click', function() {
+        copyScore();
     });
 
     function startGame() {
@@ -214,21 +219,33 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function endGame() {
-        gameArea.innerHTML = `<h2>Game Over</h2><p>Rise Catfishing #1 - ${score}/${articles.length}</p>`;
+        const finalScore = `Rise Catfishing #1 - ${score}/${articles.length}`;
+        gameArea.innerHTML = `<h2>Game Over</h2><p>${finalScore}</p>`;
         const resultsDiv = document.createElement('div');
-        resultsDiv.innerHTML = '<h3>Results:</h3>';
+        resultsDiv.id = 'results-div';
         let resultRow1 = '';
         let resultRow2 = '';
         results.forEach((result, index) => {
-            const resultEmoji = result === 'right' ? '🐈' : result === 'wrong' ? '🐟' : '🐈🐟';
+            const resultEmoji = result === 'right' ? '🔥' : result === 'wrong' ? '🐟' : '🥚';
             if (index < 5) {
                 resultRow1 += resultEmoji;
             } else {
                 resultRow2 += resultEmoji;
             }
         });
-        resultsDiv.innerHTML += `<p>${resultRow1}</p><p>${resultRow2}</p>`;
+        resultsDiv.innerHTML = `<p>${resultRow1}</p><p>${resultRow2}</p>`;
         gameArea.appendChild(resultsDiv);
+        gameArea.appendChild(copyScoreButton);
+        copyScoreButton.classList.remove('hidden');
+    }
+
+    function copyScore() {
+        const finalScore = `Rise Catfishing #1 - ${score}/${articles.length}\n${results.slice(0, 5).map(result => result === 'right' ? '🔥' : result === 'wrong' ? '🐟' : '🥚').join('')}\n${results.slice(5).map(result => result === 'right' ? '🔥' : result === 'wrong' ? '🐟' : '🥚').join('')}`;
+        navigator.clipboard.writeText(finalScore).then(() => {
+            alert('Score copied to clipboard!');
+        }).catch(err => {
+            console.error('Could not copy text: ', err);
+        });
     }
 
     function levenshteinDistance(a, b) {
