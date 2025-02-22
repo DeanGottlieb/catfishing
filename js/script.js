@@ -214,13 +214,20 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function endGame() {
-        gameArea.innerHTML = `<h2>Game Over</h2><p>Your final score is ${score} out of ${articles.length}</p>`;
+        gameArea.innerHTML = `<h2>Game Over</h2><p>Rise Catfishing #1 - ${score}/${articles.length}</p>`;
         const resultsDiv = document.createElement('div');
         resultsDiv.innerHTML = '<h3>Results:</h3>';
+        let resultRow1 = '';
+        let resultRow2 = '';
         results.forEach((result, index) => {
-            const resultEmoji = result === 'right' ? '🔥' : result === 'wrong' ? '🐟' : '🥚';
-            resultsDiv.innerHTML += `<p>Article ${index + 1}: ${resultEmoji}</p>`;
+            const resultEmoji = result === 'right' ? '🐈' : result === 'wrong' ? '🐟' : '🐈🐟';
+            if (index < 5) {
+                resultRow1 += resultEmoji;
+            } else {
+                resultRow2 += resultEmoji;
+            }
         });
+        resultsDiv.innerHTML += `<p>${resultRow1}</p><p>${resultRow2}</p>`;
         gameArea.appendChild(resultsDiv);
     }
 
