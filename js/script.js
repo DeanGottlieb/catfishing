@@ -22,7 +22,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Fetch version info from JSON file
     fetch('version.json')
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
         .then(data => {
             if (versionNumberElement && lastUpdatedElement) {
                 versionNumberElement.textContent = data.version;
@@ -33,12 +38,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Fetch unwanted keywords from JSON file
     fetch('unwanted_keywords.json')
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
         .then(data => {
             unwantedKeywords = data.unwanted_keywords;
             return fetch('articles.json');
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
         .then(data => {
             articles = data.articles;
             startGameButton.disabled = false; // Enable the start button after loading articles
