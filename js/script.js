@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     async function fetchCategories(articleUrl, clcontinue = null) {
-        const articleTitle = decodeURIComponent(articleUrl.split('/').pop());
+        const articleTitle = decodeURIComponent(articleUrl.split('/').pop().replace(/_/g, ' '));
         let apiUrl = `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(articleTitle)}&prop=categories|extracts&exintro&format=json&origin=*`;
         if (clcontinue) {
             apiUrl += `&clcontinue=${clcontinue}`;
