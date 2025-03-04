@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     startGameButton.addEventListener('click', function() {
         const selectedGroup = articleGroupSelector.value;
         articles = articleGroups[selectedGroup];
-        startGame(articles, gameArea, startGameButton, displayArticle);
+        startGame(articles, gameArea, startGameButton, displayArticle, articleNumberElement, userScoreElement, correctAnswerElement, categoriesContainer);
     });
 
     answerForm.addEventListener('submit', function(event) {

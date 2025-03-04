@@ -52,7 +52,7 @@ export async function fetchCategories(articleUrl, clcontinue = null) {
     }
 }
 
-export function displayArticle(article, articles, currentArticleIndex, score, results, fetchCategories) {
+export function displayArticle(article, articles, currentArticleIndex, score, results, fetchCategories, articleNumberElement, userScoreElement, correctAnswerElement, categoriesContainer) {
     if (article && article.length) {
         if (currentArticleIndex < articles.length) {
             const articleUrl = articles[currentArticleIndex];

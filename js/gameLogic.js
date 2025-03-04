@@ -1,6 +1,6 @@
 import { fetchCategories } from './utils.js';
 
-export function startGame(articles, gameArea, startGameButton, displayArticle) {
+export function startGame(articles, gameArea, startGameButton, displayArticle, articleNumberElement, userScoreElement, correctAnswerElement, categoriesContainer) {
     let currentArticleIndex = 0;
     let score = 0;
     let results = [];
@@ -9,7 +9,7 @@ export function startGame(articles, gameArea, startGameButton, displayArticle) {
     startGameButton.classList.add('hidden');
     const article = getArticle(articles, currentArticleIndex);
     console.log('Starting game with article:', article); // Add this line to verify the article
-    displayArticle(article, articles, currentArticleIndex, score, results, fetchCategories);
+    displayArticle(article, articles, currentArticleIndex, score, results, fetchCategories, articleNumberElement, userScoreElement, correctAnswerElement, categoriesContainer);
 }
 
 export function nextArticle(articles, currentArticleIndex, userAnswerInput, resultDiv, correctAnswerElement, articleLink, categoriesContainer, displayArticle, endGame) {
