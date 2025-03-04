@@ -37,12 +37,12 @@ document.addEventListener('DOMContentLoaded', async function() {
     startGameButton.addEventListener('click', function() {
         const selectedGroup = articleGroupSelector.value;
         articles = articleGroups[selectedGroup];
-        startGame(articles, gameArea, startGameButton, displayArticle, articleNumberElement, userScoreElement, correctAnswerElement, categoriesContainer);
+        startGame(articles, gameArea, startGameButton, displayArticle, articleNumberElement, userScoreElement, correctAnswerElement, categoriesContainer, unwantedKeywords);
     });
 
     answerForm.addEventListener('submit', function(event) {
         event.preventDefault();
-        checkAnswer();
+        checkAnswer(userAnswerInput, articles, currentArticleIndex, score, results, userScoreElement, resultDiv, showCorrectAnswer);
     });
 
     nextArticleButton.addEventListener('click', function() {
@@ -62,6 +62,6 @@ document.addEventListener('DOMContentLoaded', async function() {
     });
 
     copyScoreButton.addEventListener('click', function() {
-        copyScore();
+        copyScore(score, articles, results);
     });
 });

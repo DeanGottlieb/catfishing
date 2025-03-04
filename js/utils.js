@@ -1,4 +1,4 @@
-export async function fetchCategories(articleUrl, clcontinue = null) {
+export async function fetchCategories(articleUrl, unwantedKeywords, categoriesContainer, correctAnswerElement, clcontinue = null) {
     const articleTitle = decodeURIComponent(articleUrl.split('/').pop().replace(/_/g, ' '));
     let apiUrl = `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(articleTitle)}&prop=categories|extracts&exintro&format=json&origin=*`;
     if (clcontinue) {
@@ -45,14 +45,14 @@ export async function fetchCategories(articleUrl, clcontinue = null) {
 
         // Check if there are more categories to fetch
         if (data.continue && data.continue.clcontinue) {
-            await fetchCategories(articleUrl, data.continue.clcontinue);
+            await fetchCategories(articleUrl, unwantedKeywords, categoriesContainer, correctAnswerElement, data.continue.clcontinue);
         }
     } catch (error) {
         console.error('Error fetching categories:', error);
     }
 }
 
-export function displayArticle(article, articles, currentArticleIndex, score, results, fetchCategories, articleNumberElement, userScoreElement, correctAnswerElement, categoriesContainer) {
+export function displayArticle(article, articles, currentArticleIndex, score, results, fetchCategories, articleNumberElement, userScoreElement, correctAnswerElement, categoriesContainer, unwantedKeywords) {
     if (article && article.length) {
         if (currentArticleIndex < articles.length) {
             const articleUrl = articles[currentArticleIndex];
@@ -60,7 +60,7 @@ export function displayArticle(article, articles, currentArticleIndex, score, re
             userScoreElement.textContent = `Score: ${score}/${currentArticleIndex}`;
             correctAnswerElement.innerHTML = '';
             categoriesContainer.innerHTML = '';
-            fetchCategories(articleUrl);
+            fetchCategories(articleUrl, unwantedKeywords, categoriesContainer, correctAnswerElement);
         } else {
             endGame();
         }
@@ -69,7 +69,7 @@ export function displayArticle(article, articles, currentArticleIndex, score, re
     }
 }
 
-export function checkAnswer() {
+export function checkAnswer(userAnswerInput, articles, currentArticleIndex, score, results, userScoreElement, resultDiv, showCorrectAnswer) {
     const userAnswer = userAnswerInput.value.trim().toLowerCase();
     const correctAnswer = decodeURIComponent(articles[currentArticleIndex].split('/').pop()).replace(/_/g, ' ').toLowerCase();
     if (correctAnswer && correctAnswer[0]) {
@@ -92,7 +92,7 @@ export function checkAnswer() {
     }
 }
 
-export function showCorrectAnswer(isCorrect) {
+export function showCorrectAnswer(isCorrect, correctAnswerElement, articleLink, iGotItButton, closeEnoughButton) {
     const title = correctAnswerElement.dataset.title;
     const url = correctAnswerElement.dataset.url;
     const extract = correctAnswerElement.dataset.extract;
@@ -109,7 +109,7 @@ export function showCorrectAnswer(isCorrect) {
     }
 }
 
-export function endGame() {
+export function endGame(gameArea, score, articles, copyScoreButton, results) {
     const finalScore = `Rise Catfishing #1 - ${score}/${articles.length}`;
     gameArea.innerHTML = `<h2>Game Over</h2><p>${finalScore}</p>`;
     const resultsDiv = document.createElement('div');
@@ -130,7 +130,7 @@ export function endGame() {
     copyScoreButton.classList.remove('hidden');
 }
 
-export function copyScore() {
+export function copyScore(score, articles, results) {
     const finalScore = `Rise Catfishing #1 - ${score}/${articles.length}\n${results.slice(0, 5).map(result => result === 'right' ? '🔥' : result === 'wrong' ? '🐟' : '🥚').join('')}\n${results.slice(5).map(result => result === 'right' ? '🔥' : result === 'wrong' ? '🐟' : '🥚').join('')}`;
     navigator.clipboard.writeText(finalScore).then(() => {
         alert('Score copied to clipboard!');
