@@ -108,6 +108,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.error("Error loading articles:", error);
             });
     }
+    
+    function getArticle() {
+        if (currentArticleIndex < articles.length) {
+            return articles[currentArticleIndex];
+        } else {
+            return null;
+        }
+    }
 
     function startGame() {
         currentArticleIndex = 0;
