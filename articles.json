@@ -1,14 +1,28 @@
 {
-    "articles": [
-        "https://en.wikipedia.org/wiki/Ultimate_frisbee",
-        "https://en.wikipedia.org/wiki/Honey_badger",
-        "https://en.wikipedia.org/wiki/Jeppson%27s_Mal%C3%B6rt",
-        "https://en.wikipedia.org/wiki/Ghoul",
-        "https://en.wikipedia.org/wiki/Brad_Underwood",
-        "https://en.wikipedia.org/wiki/Pok%C3%A9mon_Go",
-        "https://en.wikipedia.org/wiki/PrizePicks",
-        "https://en.wikipedia.org/wiki/Vince_Wilfork",
-        "https://en.wikipedia.org/wiki/Brown_marmorated_stink_bug",
-        "https://en.wikipedia.org/wiki/Super_Auto_Pets"
-    ]
+    "articleGroups": {
+        "1": [
+            "https://en.wikipedia.org/wiki/Ultimate_frisbee",
+            "https://en.wikipedia.org/wiki/Honey_badger",
+            "https://en.wikipedia.org/wiki/Jeppson%27s_Mal%C3%B6rt",
+            "https://en.wikipedia.org/wiki/Ghoul",
+            "https://en.wikipedia.org/wiki/Brad_Underwood",
+            "https://en.wikipedia.org/wiki/Pok%C3%A9mon_Go",
+            "https://en.wikipedia.org/wiki/PrizePicks",
+            "https://en.wikipedia.org/wiki/Vince_Wilfork",
+            "https://en.wikipedia.org/wiki/Brown_marmorated_stink_bug",
+            "https://en.wikipedia.org/wiki/Super_Auto_Pets"
+        ],
+        "2": [
+            "https://en.wikipedia.org/wiki/Slang",
+            "https://en.wikipedia.org/wiki/Survivor_(American_TV_series)",
+            "https://en.wikipedia.org/wiki/The_North_Face",
+            "https://en.wikipedia.org/wiki/Type_Shit",
+            "https://en.wikipedia.org/wiki/Maize",
+            "https://en.wikipedia.org/wiki/Boston_Celtics",
+            "https://en.wikipedia.org/wiki/Deadlock_(video_game)",
+            "https://en.wikipedia.org/wiki/Griddy",
+            "https://en.wikipedia.org/wiki/Krannert_Center_for_the_Performing_Arts",
+            "https://en.wikipedia.org/wiki/Snapchat"
+        ]
+    }
 }
