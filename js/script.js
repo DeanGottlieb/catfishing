@@ -97,7 +97,8 @@ document.addEventListener('DOMContentLoaded', function() {
         results = [];
         gameArea.classList.remove('hidden');
         startGameButton.classList.add('hidden');
-        displayArticle();
+        const article = getArticle(); // Ensure getArticle() returns a valid article
+        displayArticle(article);
     }
 
     function nextArticle() {
@@ -115,16 +116,20 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    function displayArticle() {
-        if (currentArticleIndex < articles.length) {
-            const articleUrl = articles[currentArticleIndex];
-            articleNumberElement.textContent = `Article ${currentArticleIndex + 1} of ${articles.length}`;
-            userScoreElement.textContent = `Score: ${score}/${currentArticleIndex}`;
-            correctAnswerElement.innerHTML = '';
-            categoriesContainer.innerHTML = '';
-            fetchCategories(articleUrl);
+    function displayArticle(article) {
+        if (article && article.length) {
+            if (currentArticleIndex < articles.length) {
+                const articleUrl = articles[currentArticleIndex];
+                articleNumberElement.textContent = `Article ${currentArticleIndex + 1} of ${articles.length}`;
+                userScoreElement.textContent = `Score: ${score}/${currentArticleIndex}`;
+                correctAnswerElement.innerHTML = '';
+                categoriesContainer.innerHTML = '';
+                fetchCategories(articleUrl);
+            } else {
+                endGame();
+            }
         } else {
-            endGame();
+            console.error("Article is undefined or empty");
         }
     }
 
@@ -185,20 +190,24 @@ document.addEventListener('DOMContentLoaded', function() {
     function checkAnswer() {
         const userAnswer = userAnswerInput.value.trim().toLowerCase();
         const correctAnswer = decodeURIComponent(articles[currentArticleIndex].split('/').pop()).replace(/_/g, ' ').toLowerCase();
-        const distance = levenshteinDistance(userAnswer, correctAnswer);
-        const threshold = 4; // Adjust this threshold as needed
+        if (correctAnswer && correctAnswer[0]) {
+            const distance = levenshteinDistance(userAnswer, correctAnswer);
+            const threshold = 4; // Adjust this threshold as needed
 
-        if (distance <= threshold) {
-            score++;
-            results[currentArticleIndex] = 'right';
-            showCorrectAnswer(true);
+            if (distance <= threshold) {
+                score++;
+                results[currentArticleIndex] = 'right';
+                showCorrectAnswer(true);
+            } else {
+                results[currentArticleIndex] = 'wrong';
+                showCorrectAnswer(false);
+            }
+
+            userScoreElement.textContent = `Score: ${score}/${currentArticleIndex + 1}`;
+            resultDiv.classList.remove('hidden');
         } else {
-            results[currentArticleIndex] = 'wrong';
-            showCorrectAnswer(false);
+            console.error("Correct answer is undefined or empty");
         }
-
-        userScoreElement.textContent = `Score: ${score}/${currentArticleIndex + 1}`;
-        resultDiv.classList.remove('hidden');
     }
 
     function showCorrectAnswer(isCorrect) {
