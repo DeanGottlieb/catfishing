@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const versionNumberElement = document.getElementById('version-number');
     const lastUpdatedElement = document.getElementById('last-updated');
     const copyScoreButton = document.getElementById('copy-score');
+    const articleGroupSelector = document.getElementById('article-group-selector');
 
     let articles = [];
     let unwantedKeywords = [];
@@ -57,13 +58,14 @@ document.addEventListener('DOMContentLoaded', function() {
             return response.json();
         })
         .then(data => {
-            articles = data.articles;
+            articles = data.articleGroups['1']; // Default to group 1
             startGameButton.disabled = false; // Enable the start button after loading articles
         })
         .catch(error => console.error('Error fetching data:', error));
 
     startGameButton.addEventListener('click', function() {
-        startGame();
+        const selectedGroup = articleGroupSelector.value;
+        loadArticles(selectedGroup, startGame);
     });
 
     answerForm.addEventListener('submit', function(event) {
@@ -90,6 +92,22 @@ document.addEventListener('DOMContentLoaded', function() {
     copyScoreButton.addEventListener('click', function() {
         copyScore();
     });
+
+    function loadArticles(groupNumber, callback) {
+        fetch('articles.json')
+            .then(response => response.json())
+            .then(data => {
+                articles = data.articleGroups[groupNumber];
+                if (articles) {
+                    callback();
+                } else {
+                    console.error("Article group not found");
+                }
+            })
+            .catch(error => {
+                console.error("Error loading articles:", error);
+            });
+    }
 
     function startGame() {
         currentArticleIndex = 0;
@@ -289,4 +307,25 @@ document.addEventListener('DOMContentLoaded', function() {
 
         return matrix[b.length][a.length];
     }
+
+    function loadData(callback) {
+        fetch('articles.json')
+            .then(response => response.json())
+            .then(data => {
+                callback(data);
+            })
+            .catch(error => {
+                console.error("Error loading data:", error);
+            });
+    }
+
+    // Example usage
+    loadData(data => {
+        const articles = data.articleGroups['1']; // Ensure the group exists
+        if (articles) {
+            startGame(articles);
+        } else {
+            console.error("Article group not found");
+        }
+    });
 });
