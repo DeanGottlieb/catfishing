@@ -8,6 +8,7 @@ export function startGame(articles, gameArea, startGameButton, displayArticle) {
     gameArea.classList.remove('hidden');
     startGameButton.classList.add('hidden');
     const article = getArticle(articles, currentArticleIndex);
+    console.log('Starting game with article:', article); // Add this line to verify the article
     displayArticle(article, articles, currentArticleIndex, score, results, fetchCategories);
 }
 

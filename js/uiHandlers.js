@@ -31,6 +31,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     unwantedKeywords = await fetchUnwantedKeywords();
     const articleGroups = await fetchArticles();
     articles = articleGroups['1']; // Default to group 1
+    console.log('Loaded articles:', articles); // Add this line to verify articles are loaded
     startGameButton.disabled = false; // Enable the start button after loading articles
 
     startGameButton.addEventListener('click', function() {

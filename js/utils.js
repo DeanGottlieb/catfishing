@@ -148,7 +148,7 @@ export function levenshteinDistance(a, b) {
     }
 
     // increment each column in the first row
-    for (let j = 0, j <= a.length; j++) {
+    for (let j = 0; j <= a.length; j++) {
         matrix[0][j] = j;
     }
 
